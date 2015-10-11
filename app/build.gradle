@@ -1,0 +1,43 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        applicationId "com.emtronics.quadbotdroid"
+        minSdkVersion 15
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets.main {
+        //jni.srcDirs = []
+        jniLibs.srcDir 'src/main/libs'
+    }
+
+    tasks.whenTaskAdded { task ->
+        if (task.name.equals("compileDebugNdk")) {
+            task.enabled = false
+        }
+    }
+
+    tasks.whenTaskAdded { task ->
+        if (task.name.equals("compileReleaseNdk")) {
+            task.enabled = false
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile group:'org.zeromq', name:'jeromq', version:'0.3.5'
+}
